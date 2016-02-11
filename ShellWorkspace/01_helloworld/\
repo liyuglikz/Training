@@ -1,0 +1,10 @@
+#/bin/bash
+echo hello world
+echo 'hello world'
+echo "hello world"
+
+#printf hello,world
+printf "hello world"
+
+str='hello world'
+print $str
