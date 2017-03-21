@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef long long int ll;
+
+int main()
+{
+    ll a, b;
+    while( scanf("%llX%llX", &a, &b) == 2)
+    {
+        if( ((a + b) & (1 << 63)) == 0)
+        {
+            printf("%llX\n", a + b);
+        }
+        else
+        {
+            printf("-%X\n", (~(a + b) + 1));
+        }
+    }
+    return 0;
+}
