@@ -11,6 +11,7 @@ int mps[MAXN][MAXN];
 int path[MAXN];
 int lib[MAXN];
 int val[MAXN];
+int fath[MAXN];
 
 int n, m;
 int source, destination;
@@ -48,28 +49,33 @@ int dij()
 				}
 			}
 		}
+		if( flags[now] )
+			continue;
 
 		flags[ now ] = true;
 
 		for(int j = 0; j < n; ++j)
 		{
-			if( !flags[j] && path[j] != -1 && mps[now][j] != -1)
+			if( !flags[j] && j != now && path[j] != -1 && mps[now][j] != -1)
 			{
-//				path[j] = MIN( path[j], path[now] + mps[now][j]);
-
-				if( tmp + mps[now][j] >= path[j] )
+				if( tmp + mps[now][j] <= path[j] )
 				{
-					if( tmp + mps[now][j] == path[j] && val_now < val[j])
-						;
-					path[j]  = tmp + mps[now][j];
-					val[j] = val_now + lib[j];
-				}
+					//bug final: val_now + lib[i] < val[j]; >.<;
+					if( tmp + mps[now][j] == path[j] && val_now + lib[j] < val[j])
+						continue;
 
+					path[j] = tmp + mps[now][j];
+					val[j] = val_now + lib[j];
+
+					fath[j] = now;
+				}
 			}
-			else if( !flags[j] && path[j] == -1 && mps[now][j] != -1)
+			else if( !flags[j] &&  mps[now][j] != -1)
 			{
 				path[j] = path[now] + mps[now][j];
-				val[j] = val_now + lib[j];
+				val [j] = val_now + lib[j];
+
+				fath[j] = now;
 			}
 		}
 	}
@@ -79,35 +85,34 @@ int dij()
 
 
 int ans;
-/*
-void dfs(int now, int t, int sum)
+stack<int> answer;
+
+void dfs( int now, int t)
 {
-//	printf("%d %d %d\n", now, t, sum);
-	if( flags[now] || t < 0)
-		return;
-	if( now == destination)
+//	printf("%d %d\n", now, t);
+	if( now == destination && t == 0)
 	{
-		ans = MAX(ans, sum);
+		++ans;
 		return;
 	}
 
-	flags[now] = true;
 	for(int i = 0; i < n; ++i)
 	{
-		if( !flags[i] && mps[now][i] != -1)
+		if( !flags[i] && mps[now][i] != -1 && t - mps[now][i] >= 0)
 		{
-			dfs( i, t - mps[now][i], sum + lib[i]);
+			flags[i] = true;	
+			dfs( i, t - mps[now][i]);
+			flags[i] = false;
 		}
 	}
-	flags[now] = false;
 }
-*/
 
 void solve()
 {
 
+	memset( fath,-1, sizeof(fath));
+	memset( path,-1, sizeof(path));
 	memset( mps, -1, sizeof(mps) );
-	memset( path, -1, sizeof(path));
 
 	int a, b, c;
 	scanf("%d%d", &n, &m);
@@ -124,7 +129,24 @@ void solve()
 
 	int mini_dis = dij();		
 
-	printf("%d %d\n", mini_dis, val[destination]);
+	memset( flags, 0, sizeof(flags));
+	flags[ source ] = true;
+	dfs( source, mini_dis);
+
+	printf("%d %d\n", ans, val[destination]);
+
+	for(int i = destination; i != -1; i = fath[i])
+	{
+//		printf("->%d", i);
+		answer.push( i );
+	}
+	printf("%d", source);
+	while( !answer.empty())
+	{
+		printf(" %d", answer.top());
+		answer.pop();
+	}
+	printf("\n");
 }
 
 int main()

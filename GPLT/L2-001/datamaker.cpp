@@ -23,7 +23,7 @@ int main()
 
 	for(int i = 0; i < m; ++i)
 	{
-		printf("%d %d %d\n", rget(0, n), rget(0, n), rget(0, 10));
+		printf("%d %d %d\n", rget(0, n), rget(0, n), rget(1, 10));
 	}
 
 	return 0;
