@@ -2,7 +2,7 @@
 
 #define EX(a, b) (a = a ^ b, b = a ^ b, a = a ^ b)
 using namespace std;
-const int MAXN = 50;
+const int MAXN = 55;
 typedef pair<int, int> Point;
 typedef pair<Point, int> ans_node;
 
@@ -14,15 +14,23 @@ class node
 };
 
 node lib[MAXN];
-map<Point, int> mps0;
-map<Point, int> mps1;
+int mps0[MAXN][MAXN];
+int mps1[MAXN][MAXN];
 
 set<int> buff;
 set<int> :: iterator it1;
 set<int> :: iterator it2;
 
+void init()
+{
+	memset( mps1, -1, sizeof( mps1 ) );
+	memset( mps0, -1, sizeof( mps0 ) );
+}
+
 void solve()
 {
+	init();
+
 	int n, k, a, b;
 	scanf("%d", &n);
 
@@ -46,19 +54,23 @@ void solve()
 		if(a > b)
 			EX(a, b);
 
-		if( mps0.end() == mps0.find( Point(a, b) ))
+		if( mps0[a][b] == -1 )
 		{
 			buff.clear();
+			/*
 			for( it1 = lib[a].s.begin(); it1 != lib[a].s.end(); ++it1)
 				buff.insert( *it1 );
 
 			for( it1 = lib[b].s.begin(); it1 != lib[b].s.end(); ++it1)
 				buff.insert( *it1 );
+				*/
+			buff.insert( lib[a].s.begin(), lib[a].s.end());
+			buff.insert( lib[b].s.begin(), lib[b].s.end());
 
-			mps0.insert( ans_node( Point(a, b), buff.size()) );
+			mps0[a][b] = buff.size();
 		}
 
-		if( mps1.end() == mps1.find( Point(a, b) ))
+		if( mps1[a][b] == -1)
 		{
 			int cache = 0;
 			for( it1 = lib[a].s.begin(); it1 != lib[a].s.end(); ++it1)
@@ -66,11 +78,11 @@ void solve()
 				if( lib[b].s.end() != lib[b].s.find( *it1 ) )
 					++cache;
 			}
-			mps1.insert( ans_node( Point(a, b), cache) );
+			mps1[a][b] = cache;
 		}
 
 
-		ans = 100.0 * (mps1[ Point(a, b ) ] / (double)mps0[ Point(a, b) ]);
+		ans = 100.0 * (mps1[a][b] / (double)mps0[a][b]);
 		printf("%.2f%%\n", ans);
 	}
 }
