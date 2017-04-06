@@ -1,0 +1,36 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
+#include <vector>
+#include <queue>
+#include <stack>
+#include <
+using namespace std;
+
+const double eps = 1e-8;
+const double pi = acos(-1);
+const int MAXN = 105;
+
+typedef long long int ll;
+
+
+void solve()
+{
+	int T;
+	scanf("%d", &T);
+	while(T--)
+	{
+	}
+}
+
+int main()
+{
+	solve();
+	return 0;
+}
