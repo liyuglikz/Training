@@ -40,9 +40,9 @@ void solve()
 
 	for(int i = 0; i < n; ++i)
 	{
-//		if( i )
-//			putchar (' ');
-		printf("%d\n", lib[i]);
+		if( i )
+			putchar (' ');
+		printf("%d", lib[i]);
 	}
 	printf("\n");
 }

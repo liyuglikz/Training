@@ -19,6 +19,7 @@ void solve()
 {
 	int n, k, cnt;
 	scanf("%d", &n);
+
 	for(int i = 0; i < n; ++i)
 	{
 		scanf("%d", lib + i);
@@ -30,17 +31,17 @@ void solve()
 
 	sort( mps, mps + n, cmp);
 
-	int now = lib[0].first;
+	int now = mps[0].first;
 
 	for(int i = 1; i < n; ++i)
 	{
-		if( lib[i].first == lib[i - 1].first)
+		if( mps[i].first <= now) // compare with now
 		{
-			if( now > lib[i].first)
-				++now;
-			lib[i].first = now;
+			mps[i].first = now + 1;
+			++now;
 		}
-		++now;
+		else
+			now = mps[i].first;
 	}
 
 	for(int i = 0; i < n; ++i)
