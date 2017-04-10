@@ -108,10 +108,21 @@ void judge_degree()
 	}
 }
 
-void judge()
+bool judge()
 {
 	mss();
 	judge_degree();
+	a = b = 0;
+	int ans = 1;
+
+	if(a > 1 || b > 1)
+		ans = 0;
+
+	return ans == 1;
+}
+
+void dfs(int now)
+{
 }
 
 void solve()
@@ -122,16 +133,10 @@ void solve()
 	{
 		init();
 		input();
-		judge();
+		int ans = judge();
+		if( !ans )
+			puts("***");
 
-		a = b = 0;
-		int ans = 1;
-
-
-		if(a > 1 || b > 1)
-			ans = 0;
-
-		printf("%s\n", ans ? "Ordering is possible." : "The door cannot be opened.");
 	}
 }
 
