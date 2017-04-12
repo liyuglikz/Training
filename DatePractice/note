@@ -1,0 +1,11 @@
+https://vjudge.net/contest/158333
+
+
+Zeller formula:
+给出日期，得到该日期是星期几:
+	w = ( [c/4] - 2 * c + y + [y/4] + [13 * (m + 1) / 5] + d - 1) MOD 7
+
+	c:世纪(年前两位-1)
+	y:年后两位
+	m:月 + 2
+	d:天
