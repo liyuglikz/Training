@@ -1,0 +1,2 @@
+PROJECT (Main)
+ADD_EXECUTABLE(Main Main.cpp)

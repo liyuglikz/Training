@@ -1,0 +1,1 @@
+just a cmake practic
