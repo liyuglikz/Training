@@ -8,6 +8,15 @@ char s[MAXN];
 int i, j, k;
 int a, b, c;
 
+bool judge2(int a, int b, int d)
+{
+	if( a == d && b == 0)
+		return true;
+	else if( a > d || b < 0)
+		return false;
+	return judge2( a, b - 1, d - a);
+}
+
 bool judge( char s[] )
 {
 	char *p = s;
@@ -39,7 +48,8 @@ bool judge( char s[] )
 		else
 		{
 			b = c - a - 2;
-			return (len - 1 - c - a >= 0) && ( b == 0 || a % b == 0);
+			int d = len - 1 - c;
+			return judge2(a, b, d);
 		}
 	}
 	else
