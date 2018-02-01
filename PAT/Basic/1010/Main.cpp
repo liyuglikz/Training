@@ -7,6 +7,7 @@ queue<Node> que, ans;
 int main()
 {
 	Node node;
+
 	while( cin >> node.first >> node.second)
 	{
 		node.first *= node.second;
@@ -20,9 +21,12 @@ int main()
 		que.pop();
 		if( node.first != 0 || node.second == 0 )
 			ans.push( node );
-		else if( node.first == 0 && node.second == -1)
-			ans.push( Node(0, 0) );
+//		else if( node.first == 0 && node.second == -1)
+//			ans.push( Node(0, 0) );
 	}
+
+	if( ans.empty())//求导后多项式没有项需输出0 0，此处不应该卡住 >.<
+		printf("0 0");
 
 	while( !ans.empty() )
 	{
