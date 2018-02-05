@@ -6,6 +6,7 @@ using namespace std;
 char ans[][10] = {"MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"};
 vector<char> lib;
 int flag;
+int A, B, C;
 
 bool judgeC( char c)
 {
@@ -42,6 +43,7 @@ void cmp( char *s1, char *s2)
 	{
 		if( *(s1 + i) == *(s2 + i))
 		{
+			/*
 			if( flag == 0 && judgeC( *(s1 + i)) )
 			{
 				lib.push_back( *(s1 + i) );
@@ -51,10 +53,17 @@ void cmp( char *s1, char *s2)
 			{
 				lib.push_back( *(s1 + i) );
 				++flag;
-				return;
+//				return;
 			}
 			else if(flag == 2 && judgec(*(s1 +i)))
 				lib.push_back( (char)i );
+				*/
+			if( A == -1 && judgeC( *(s1 + i)))
+				A = *(s1 + i);
+			if( A!= -1 && B == -1 && judge( *(s1 + i)))
+				B = *(s1 + i);
+			if( A != -1 && B != -1 && C == -1 && judgec( *(s1 + i)) )
+				C = i;
 		}
 	}
 }
@@ -62,12 +71,19 @@ char s1[100], s2[100];
 
 int main()
 {
+	A = B = C = -1;
+	flag = 0;
 	scanf("%s%s", s1, s2);
 	cmp(s1, s2);
 	scanf("%s%s", s1, s2);
 	cmp(s1, s2);
 
+	/*
 	printf("%s", ans[ func_day( lib[0])]);
 	printf(" ");
 	printf("%02d:%02d\n", func_time(lib[1]) % 24, (int) lib[2]);
+	*/
+	printf("%s", ans[ func_day( A)]);
+	printf(" ");
+	printf("%02d:%02d\n", func_time( B ) % 24, (int) C);
 }
