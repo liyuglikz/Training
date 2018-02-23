@@ -7,8 +7,7 @@ const double eps = 1e-8;
 class Node
 {
 	public:
-		int a, b;
-		double c;
+		double a, b, c; //此处注意卡精度！
 };
 
 bool cmp( Node &A, Node &B)
@@ -23,10 +22,10 @@ int main()
 	scanf("%d%d", &n, &m);
 
 	for(int i = 0; i < n; ++i)
-		scanf("%d", &lib[i].a);
+		scanf("%lf", &lib[i].a);
 	for(int i = 0; i < n; ++i)
 	{
-		scanf("%d", &lib[i].b);
+		scanf("%lf", &lib[i].b);
 		lib[i].c = lib[i].b / (double)lib[i].a;
 	}
 	sort( lib, lib + n, cmp);
