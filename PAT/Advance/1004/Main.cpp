@@ -39,7 +39,7 @@ void bfs(int root)	//改进BFS，要记录每层节点数，逐层遍历
 				else
 				{
 					que.push( *it );
-					++k;	//统计非每层的非叶子
+					++k;	//统计每层的非叶子
 				}
 			}
 		}

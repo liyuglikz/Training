@@ -1,6 +1,6 @@
 PAT(Programming Ability Test) Practice
 
 Folder Meanning:
-	A	->	顶级
-	B	->	甲级
-	C	->	乙级
+	Top	->	顶级
+	Advance	->	甲级
+	Basic	->	乙级
