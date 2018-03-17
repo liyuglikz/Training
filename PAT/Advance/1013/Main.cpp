@@ -12,9 +12,42 @@ vector<int> :: iterator it;
 bool cities[MAXN];
 bool flags[MAXN];
 
+template<class T>
+class Queue
+{
+public:
+	const static int MAXQ = 1e5 + 5;
+	T que[MAXQ];
+	int f, r;
+
+	explicit Queue() : f(0), r(0)
+	{}
+
+	bool empty()
+	{		return f == r;}
+
+	bool full()
+	{
+		return (r - f + MAXQ) % MAXQ == MAXQ - 1;
+	}
+
+	void push( T k )
+	{
+		que[ r++ ] = k;
+		r %= MAXQ;
+	}
+
+	T front()
+	{	return que[f];}
+
+	void pop()
+	{	f = (f + 1) % MAXQ;}
+
+};//手写队列（卡时间）
+
+Queue<int> que;
 void bfs( int root )
 {
-	queue<int> que;
 	que.push(root);
 	while( !que.empty())
 	{

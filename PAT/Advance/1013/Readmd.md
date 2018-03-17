@@ -35,5 +35,5 @@ Sample Output
 0
 
 
-BFS/DFS:超时
+BFS/DFS:超时（但是如果用数组手写队列或者栈可以卡时间）
 并查集
