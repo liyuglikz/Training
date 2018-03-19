@@ -1,0 +1,32 @@
+/* note for cmake-languate (https://cmake.org/cmake/help/latest/manual/cmake-language.7.html#cmake-language-7) */
+
+[ 0 Organization ]
+	[0.1 Dircetories	(CMakeLists.txt)]
+		编译过程中，CMakeLists.txt是当前入口。
+		可以通过add_subdirectory()命令来添加子目录，每个被此命令添加的子目录中也必须包含一个CMakeLists.txt作为其子目录的入口。
+
+		(etc:)
+			.
+			│	
+			└ CMakeLists.txt (EntryPoint)
+				│
+				├ Main.cpp		
+				│
+				├ others.....
+				│
+				├ [subdir1] ── CMakeLists.txt 
+				│					│
+				│					└─ somecode.cpp ...
+				│
+				└ [subdir2] ── CMakeLists.txt 
+									│
+									└─ [subdir2.1] ── CMakeLists.txt 
+
+
+	[0.1 Scripts	(<script>.cmake)]
+		单独的 <script>.cmake 文件可以通过cmake 带 -P 参数在脚本模式下执行。
+		脚本模式只是简单运行 脚本文件 中的命令。
+
+
+	[0.2 Modules	(<module>.cmake)]
+		CMake语言代码可以在Directories或Scripts中使用 include() 命令调用 <module>.cmake 文件。

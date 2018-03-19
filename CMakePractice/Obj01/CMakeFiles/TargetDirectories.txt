@@ -1,0 +1,3 @@
+/home/ytexas/Workspace/Training/CMakePractice/Obj01/CMakeFiles/edit_cache.dir
+/home/ytexas/Workspace/Training/CMakePractice/Obj01/CMakeFiles/rebuild_cache.dir
+/home/ytexas/Workspace/Training/CMakePractice/Obj01/CMakeFiles/Main.dir

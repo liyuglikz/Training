@@ -1,3 +1,0 @@
-/home/ytexas/Desktop/Demo0/build/CMakeFiles/edit_cache.dir
-/home/ytexas/Desktop/Demo0/build/CMakeFiles/rebuild_cache.dir
-/home/ytexas/Desktop/Demo0/build/CMakeFiles/Main.dir
