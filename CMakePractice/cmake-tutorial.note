@@ -1,1 +1,8 @@
-/* note for cmake tutorial (https://cmake.org/cmake-tutorial/)*/
+/* note for cmake tutorial ( https://cmake.org/cmake-tutorial/ )*/
+
+1. Basic Starting
+
+	CMakeLists.txt
+		cmake_minimum_required( VERSION 2.6)
+		project (Tutorial)
+		add_executable(Tutorial tutorial.cxx)
