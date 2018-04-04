@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=UColors
+Exec=qmlscene $@ UColors/Main.qml
+Icon=UColors/UColors.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
