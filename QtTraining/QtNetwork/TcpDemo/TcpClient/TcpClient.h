@@ -18,6 +18,8 @@ private slots:
 public:
     TcpClient(QWidget *parent = 0);
     ~TcpClient();
+
+    void deployMSG( QByteArray &data_array);
 private:
 
     QVBoxLayout *layout_main;

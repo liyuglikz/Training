@@ -88,3 +88,13 @@ void TcpClient::receiveMSG()
     label.setText( buff );
 }
 */
+
+void TcpClient::deployMSG(QByteArray &data_array)
+{
+    socket->abort();
+    socket->connectToHost(
+                line_add->text(),
+                line_port->text().toInt()
+                );
+    this->socket->write( data_array.data() );
+}
