@@ -58,4 +58,51 @@ How does it works?
 		exit(0);
 	}
 
-// in TcpServer
+
+/*
+ * 通过继承QTcpServer 
+ * 使用QTcpServer::StartServer() 启动服务器
+ * 重载incommingConnection( int socketDescriptor)，并调用SocketThread启动一个线程来连接客户端，并且将thread的finished()信号与deleteLater链接
+ */
+// in TcpServer.h
+...
+	clas TcpServer : public QTcpServer
+	{
+		Q_OBJECT
+		public:
+			explicit TcpServer( QObject *parent = 0);
+			void StartServer();
+
+		private:
+		protected:
+			void incomingConnection( qintptr socketDescriptor);
+	}
+
+// in TcpServer.cpp
+
+	TcpServer::TcpSerer(QObject *parent) : QTcpServer(parent )
+	{
+	}
+
+	void TcpServer::StartServer()
+	{
+		if( this->listen( QHostAddress::Any, 1234 ) )
+		{
+			qDebug() << "listening";
+		}
+		else
+		{
+			qDebug() << "Success";
+		}
+
+	}
+
+	void TcpServer::incomingConnection( qintptr socketDescriptor)
+	{
+
+		qDebug() << socketDescription << " connecting";
+		SocketThread *thread = new SocketThread( socketDescription );
+		thread->start();
+		connect( thread, SIGNAL( finished()), thread, SLOT( deleteLater() ) ); // once thread finished, then delete it.
+
+	}
