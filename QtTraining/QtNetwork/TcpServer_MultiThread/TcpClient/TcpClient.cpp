@@ -5,16 +5,24 @@
 TcpClient :: TcpClient( QWidget *parent ) : QWidget( parent )
 {
 	this->socket = NULL;
-	line_ip = new QLineEdit("127.0.0.1");
-	line_port = new QLineEdit("9248");
+	line_ip = new QLineEdit("47.98.135.6");
+	line_port = new QLineEdit("9249");
 
 	text_message = new QTextEdit("msg");
 	button_submit = new QPushButton("Submit");
 	button_login = new QPushButton( "Login");
 	button_logout = new QPushButton( "Logout");
 
+	string_list = new QStringList();
+	model_list = new QStringListModel();
+	view_list = new QListView();
+
+	model_list->setStringList( *string_list );
+	view_list->setModel( model_list );
+
 	layout_main = new QVBoxLayout();
 
+	layout_main->addWidget( view_list );
 	layout_main->addWidget( line_ip );
 	layout_main->addWidget( line_port );
 	layout_main->addWidget( text_message );
@@ -42,6 +50,11 @@ TcpClient::~TcpClient()
 	delete button_submit;
 	delete button_login;
 	delete button_logout;
+
+	delete string_list;
+	delete model_list;
+	delete view_list;
+
 	delete layout_main;
 
 }
@@ -60,7 +73,8 @@ void TcpClient::slot_disconnected()
 void TcpClient::slot_readyRead()
 {
 	QByteArray buff = this->socket->readAll();
-	this->text_message->setText( buff.data() );
+	this->string_list->append( buff.data());
+	model_list->setStringList( *string_list );
 }
 
 void TcpClient::slot_login()

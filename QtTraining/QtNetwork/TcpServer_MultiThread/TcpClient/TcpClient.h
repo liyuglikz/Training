@@ -4,6 +4,10 @@
 
 #include <QTcpSocket>
 
+#include <QStringListModel>
+#include <QStringList>
+#include <QListView>
+
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QTextEdit>
@@ -42,6 +46,10 @@ class TcpClient : public QWidget
 		QPushButton *button_logout;
 
 		QVBoxLayout *layout_main;	
+
+		QStringList *string_list;
+		QStringListModel *model_list;
+		QListView *view_list;
 };
 
 
