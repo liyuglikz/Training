@@ -27,6 +27,7 @@ void TcpServer::StartServer()
 
 void TcpServer::incomingConnection( qintptr socketDescriptor)
 {
+	// identified new connection, then create a thread to hold this connection( by socketDescriptor )
 	qDebug() << "got";
 	qDebug() << socketDescriptor << " connecting..";
 	TcpThread *thread = new TcpThread( socketDescriptor );
