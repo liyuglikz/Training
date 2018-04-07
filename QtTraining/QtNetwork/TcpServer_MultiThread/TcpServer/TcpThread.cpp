@@ -1,5 +1,6 @@
 #include "TcpThread.h"
 #include <QDebug>
+#include <QHostAddress>
 
 TcpThread::TcpThread( int id_connection, QObject *parent) : QThread( parent )
 {
@@ -14,6 +15,8 @@ TcpThread::~TcpThread()
 void TcpThread::run()
 {
 	// init socket with socketDescriptor which receive by QtTcpServer
+	qDebug() << socket_descriptor << " Connecting...";
+
     socket = new QTcpSocket();
     if( !socket->setSocketDescriptor( this->socket_descriptor ))
     {
@@ -28,6 +31,10 @@ void TcpThread::run()
     connect( this->socket, SIGNAL( disconnected()),
              this, SLOT( slot_disconnected()), Qt::DirectConnection);
 
+	QString local_add = socket->localAddress().toString();
+	quint16 local_port = socket->localPort();
+
+	qDebug() << local_add << ":" << local_port << " Connected";
 
     this->exec();
 }

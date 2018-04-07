@@ -23,9 +23,8 @@ class TcpClient : public QWidget
 		void slot_disconnected();
 		void slot_readyRead();
 
+		void slot_send();
 		void slot_submit();
-		void slot_login();
-		void slot_logout();
 
 	public:
 		explicit TcpClient( QWidget *parent = 0 );
@@ -38,9 +37,6 @@ class TcpClient : public QWidget
 		QLineEdit *line_port;
 		QTextEdit *text_message;
 		QPushButton *button_submit;
-		QPushButton *button_login;
-		QPushButton *button_logout;
-
 		QVBoxLayout *layout_main;	
 };
 
