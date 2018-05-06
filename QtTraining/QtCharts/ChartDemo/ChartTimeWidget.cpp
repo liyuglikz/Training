@@ -9,14 +9,17 @@ ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
 
     // 1 chart & chartview init:
     this->chart->chartview.setChart( &(this->chart->chart_main) );
+    this->chart->chartview.setRenderHint( QPainter::Antialiasing);
 
     // 2 axis init:
-//    this->setXFormat("YYYY MMM HH:MM:SS");
     this->setXFormat("hh:mm:ss");
+    this->chart->axisX.setMax(QDateTime::currentDateTime().addMSecs(+5500));
+    this->chart->axisX.setMin(QDateTime::currentDateTime().addMSecs(-4500));
     this->setXTitleText("Time");
-    this->setXTickCount(10);
+    this->setXTickCount(11);
 
     this->setYRange(0, 100);
+    this->setYTickCount(11);
     this->setYLabelFormat( "%g" );
     this->setYTitleText("Value");
 
@@ -26,9 +29,8 @@ ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
     this->chart->chart_main.setAxisX( &(this->chart->axisX), &(this->chart->line_series) );
     this->chart->chart_main.setAxisY( &(this->chart->axisY), &(this->chart->line_series) );
 
-//    this->chart->line_series.attachAxis( &(this->chart->axisX) );
-//    this->chart->line_series.attachAxis( &(this->chart->axisY) );
 
+    this->chart->chart_main.setAnimationOptions(QtCharts::QChart::AllAnimations);
     this->chart->chart_main.legend()->hide ();
     this->chart->chart_main.setTitle("Real Time Data");
 
@@ -36,6 +38,8 @@ ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
     this->layout_main = new QVBoxLayout();
     this->layout_main->addWidget( &(this->chart->chartview ));
     this->setLayout( this->layout_main );
+
+    this->chart->x_unit = (this->chart->axisX.max().toSecsSinceEpoch() - this->chart->axisX.min().toSecsSinceEpoch()) / (this->getXTickCount() - 1);
 }
 
 ChartTimeWidget::~ChartTimeWidget()
@@ -46,22 +50,34 @@ ChartTimeWidget::~ChartTimeWidget()
 
 void ChartTimeWidget::append( const double &k)
 {
-    QVector<QPointF> points = this->chart->line_series.pointsVector();
-    if( points.count() >= this->chart->range_max )
+    this->chart->x_unit_plot = this->chart->chart_main.plotArea().width() / (this->getXTickCount() - 1);
+    if( this->chart->line_series.count() > 0)
     {
-        points.pop_front();
+        QPointF point_time_last = this->chart->line_series.at( this->chart->line_series.count() - 1);
+        qint64 last_t = qint64( point_time_last.rx() );
+        qint64 now_t = QDateTime::currentDateTime().toMSecsSinceEpoch();
+
+        double time_diff_msec = now_t - last_t;
+        time_diff_msec /= 1000.0;
+        time_diff_msec = 1.0;
+        this->chart->chart_main.scroll( this->chart->x_unit_plot * time_diff_msec, 0);
+        qDebug() << now_t << "_" << last_t << time_diff_msec;
+        this->chart->line_series.append( now_t,k);
     }
-    points.push_back( QPointF( (QDateTime::currentDateTime()).toMSecsSinceEpoch(), k) );
-    this->chart->line_series.replace( points );
-    //this->chart->line_series.append( (QDateTime::currentDateTime()).toMSecsSinceEpoch(),k);
+    else
+        this->chart->chart_main.scroll( this->chart->x_unit_plot , 0);
+        //this->chart->line_series.append( (QDateTime::currentDateTime()).toSecsSinceEpoch(),k);
+    this->chart->line_series.append( (QDateTime::currentDateTime()).toMSecsSinceEpoch(),k);
 }
+
+
 
 // X axis setup: range, label format, Title
 void ChartTimeWidget::setXRange( QDateTime left, QDateTime right)
 {	this->chart->axisX.setRange( left, right);}
 
 void ChartTimeWidget::setXFormat( const char *s )
-{ 	this->setXTitleText( QString(s) );}
+{ 	this->setXFormat( QString(s) );}
 
 void ChartTimeWidget::setXFormat( const QString &s )
 {	this->chart->axisX.setFormat( s );}
@@ -110,9 +126,18 @@ void ChartTimeWidget::setChartTitle(const QString &s)
 {	this->chart->chart_main.setTitle( s );}
 
 
-void ChartTimeWidget::slot_test()
+void ChartTimeWidget::slot_update()
 {
-    double k = (qrand() % 1000) / 10.0;
-    qDebug() << "debug :" << k;
-    this->append( k );
+    this->chart->last_value += (qrand() % 10);
+    this->append( this->chart->last_value);
 }
+
+
+void ChartTimeWidget::slot_setValue(const double &k)
+{	this->setValue(k);}
+
+void ChartTimeWidget::setValue(const double &k)
+{    this->chart->last_value = k;}
+
+double ChartTimeWidget::getValue() const
+{    return this->chart->last_value;}

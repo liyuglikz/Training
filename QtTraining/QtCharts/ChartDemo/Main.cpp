@@ -13,19 +13,22 @@ int main(int argc, char *argv[])
 	ChartWidget w;
 	w.show();
 
+	/*
 	for(int i = 1; i < 100; ++i)
 	{
 		w.append( QPointF(i, i * i + 2 / i) );
-//		sleep(1);
 	}
 	w.append( QPointF(0,0) );
+	*/
 
     ChartTimeWidget chart;
 
     QTimer timer;
-    timer.start( 500 );
+    timer.start( 1000 );
     QObject::connect( &timer, SIGNAL(timeout()),
-                      &chart, SLOT(slot_test()));
+                      &chart, SLOT(slot_update()));
+    QObject::connect( &timer, SIGNAL(timeout()),
+                      &w, SLOT(slot_test()));
     chart.show();
 
 	return app.exec();

@@ -8,6 +8,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QSplineSeries>
 #include <QtCharts/QValueAxis>
 #include <QtCharts/QDateTimeAxis>
 
@@ -20,9 +21,13 @@ struct ChartTime{
 
     QtCharts::QChartView chartview;
     QtCharts::QChart chart_main;	// main chart in widget
-    QtCharts::QLineSeries line_series;
+    //QtCharts::QLineSeries line_series;
+    QtCharts::QSplineSeries line_series;
 
     int range_max = 0;
+    double x_unit;
+    double x_unit_plot;
+    double last_value = 0;
 };
 
 
@@ -34,7 +39,9 @@ class ChartTimeWidget : public QWidget
 {
     Q_OBJECT
     public slots:
-        void slot_test();
+        void slot_update();
+        void slot_setValue( const double &k);
+
     public:
         ChartTimeWidget( QWidget *parent = 0);
         ~ChartTimeWidget();
@@ -64,6 +71,9 @@ class ChartTimeWidget : public QWidget
         // chart setup:
         void setChartTitle( const char *s = NULL);
         void setChartTitle( const QString &s);
+
+        void setValue( const double &k);
+        double getValue() const;
 
     private:
         ChartTime *chart;

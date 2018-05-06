@@ -7,6 +7,7 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QChartView>
 #include <QtCharts/QLineSeries>
+#include <QtCharts/QSplineSeries>
 #include <QtCharts/QValueAxis>
 
 #include <QVBoxLayout>
@@ -18,9 +19,12 @@ struct Chart{
 
 	QtCharts::QChartView chartview;
 	QtCharts::QChart chart_main;	// main chart in widget
-	QtCharts::QLineSeries line_series;
+//    QtCharts::QLineSeries line_series;
+    QtCharts::QSplineSeries line_series;
 
 	int range_max = 0;
+    double x_unit = 0;
+    double x_unit_plot = 0;
 };
 
 
@@ -32,13 +36,15 @@ class ChartWidget : public QWidget
 {
 	Q_OBJECT
     signals:
-public slots:
+    public slots:
+    void slot_test();
 
 	public:
 		ChartWidget( QWidget *parent = 0);
 		~ChartWidget();
 
 		void append(QPointF point);
+        void append_scroll(double y);
 
 		// X setup:
 		void setXRange( const int &left, const int &right);
