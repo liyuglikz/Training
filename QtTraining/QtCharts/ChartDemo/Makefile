@@ -53,12 +53,14 @@ OBJECTS_DIR   = ./
 SOURCES       = ChartWidget.cpp \
 		Main.cpp \
 		ChartTimeWidget.cpp moc_ChartWidget.cpp \
-		moc_ChartTimeWidget.cpp
+		moc_ChartTimeWidget.cpp \
+		moc_testthread.cpp
 OBJECTS       = ChartWidget.o \
 		Main.o \
 		ChartTimeWidget.o \
 		moc_ChartWidget.o \
-		moc_ChartTimeWidget.o
+		moc_ChartTimeWidget.o \
+		moc_testthread.o
 DIST          = /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/common/unix.conf \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/common/linux.conf \
@@ -240,7 +242,8 @@ DIST          = /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/features/spec_pre.p
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/features/yacc.prf \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/features/lex.prf \
 		ChartDemo.pro ChartWidget.h \
-		ChartTimeWidget.h ChartWidget.cpp \
+		ChartTimeWidget.h \
+		testthread.h ChartWidget.cpp \
 		Main.cpp \
 		ChartTimeWidget.cpp
 QMAKE_TARGET  = ChartDemo
@@ -640,7 +643,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ChartWidget.h ChartTimeWidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents ChartWidget.h ChartTimeWidget.h testthread.h $(DISTDIR)/
 	$(COPY_FILE) --parents ChartWidget.cpp Main.cpp ChartTimeWidget.cpp $(DISTDIR)/
 
 
@@ -673,9 +676,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -Wall -W -dM -E -o moc_predefs.h /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_ChartWidget.cpp moc_ChartTimeWidget.cpp
+compiler_moc_header_make_all: moc_ChartWidget.cpp moc_ChartTimeWidget.cpp moc_testthread.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_ChartWidget.cpp moc_ChartTimeWidget.cpp
+	-$(DEL_FILE) moc_ChartWidget.cpp moc_ChartTimeWidget.cpp moc_testthread.cpp
 moc_ChartWidget.cpp: /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QWidget \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qwidget.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qtwidgetsglobal.h \
@@ -813,6 +816,9 @@ moc_ChartWidget.cpp: /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QWid
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qlineseries.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QXYSeries \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QSplineSeries \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qsplineseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QList \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QValueAxis \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qvalueaxis.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QVBoxLayout \
@@ -964,6 +970,9 @@ moc_ChartTimeWidget.cpp: /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qlineseries.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QXYSeries \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QSplineSeries \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qsplineseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QList \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QValueAxis \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qvalueaxis.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QDateTimeAxis \
@@ -973,10 +982,66 @@ moc_ChartTimeWidget.cpp: /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qlayout.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qgridlayout.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QTimer \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qtimer.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qbasictimer.h \
 		ChartTimeWidget.h \
 		moc_predefs.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/bin/moc
 	/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/linux-g++ -I/home/ytexas/Workspace/Training/QtTraining/QtCharts/ChartDemo -I/home/ytexas/Workspace/Training/QtTraining/QtCharts/ChartDemo -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtGui -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ChartTimeWidget.h -o moc_ChartTimeWidget.cpp
+
+moc_testthread.cpp: /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QThread \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qthread.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qobject.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qobjectdefs.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qnamespace.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qglobal.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qconfig.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qtcore-config.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qsystemdetection.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qprocessordetection.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qcompilerdetection.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qtypeinfo.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qsysinfo.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qlogging.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qflags.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qatomic.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qbasicatomic.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qgenericatomic.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qatomic_msvc.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qglobalstatic.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qmutex.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qnumeric.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qversiontagging.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qstring.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qchar.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qbytearray.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qrefcount.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qarraydata.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qstringbuilder.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qlist.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qalgorithms.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qiterator.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qhashfunctions.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qpair.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qbytearraylist.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qstringlist.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qregexp.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qstringmatcher.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qcoreevent.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qscopedpointer.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qmetatype.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qvarlengtharray.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qcontainerfwd.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qobject_impl.h \
+		testthread.h \
+		moc_predefs.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/bin/moc
+	/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/mkspecs/linux-g++ -I/home/ytexas/Workspace/Training/QtTraining/QtCharts/ChartDemo -I/home/ytexas/Workspace/Training/QtTraining/QtCharts/ChartDemo -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtGui -I/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include testthread.h -o moc_testthread.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1130,6 +1195,9 @@ ChartWidget.o: ChartWidget.cpp ChartWidget.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qlineseries.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QXYSeries \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QSplineSeries \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qsplineseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QList \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QValueAxis \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qvalueaxis.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QVBoxLayout \
@@ -1137,7 +1205,8 @@ ChartWidget.o: ChartWidget.cpp ChartWidget.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qlayout.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QVector
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QVector \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ChartWidget.o ChartWidget.cpp
 
 Main.o: Main.cpp /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QApplication \
@@ -1246,6 +1315,9 @@ Main.o: Main.cpp /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QApplica
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtGui/qtouchdevice.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtGui/qguiapplication.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtGui/qinputmethod.h \
+		testthread.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QThread \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qthread.h \
 		ChartWidget.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QWidget \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QPointF \
@@ -1285,6 +1357,9 @@ Main.o: Main.cpp /home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QApplica
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qlineseries.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QXYSeries \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QSplineSeries \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qsplineseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QList \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QValueAxis \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qvalueaxis.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/QVBoxLayout \
@@ -1442,6 +1517,9 @@ ChartTimeWidget.o: ChartTimeWidget.cpp ChartTimeWidget.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qlineseries.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QXYSeries \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qxyseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QSplineSeries \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qsplineseries.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QList \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QValueAxis \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/qvalueaxis.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCharts/QDateTimeAxis \
@@ -1451,8 +1529,9 @@ ChartTimeWidget.o: ChartTimeWidget.cpp ChartTimeWidget.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qlayout.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtWidgets/qgridlayout.h \
-		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QVector \
-		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QDebug
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/QTimer \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qtimer.h \
+		/home/ytexas/Qt/Qt5.9.5/5.9.5/gcc_64/include/QtCore/qbasictimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ChartTimeWidget.o ChartTimeWidget.cpp
 
 moc_ChartWidget.o: moc_ChartWidget.cpp 
@@ -1460,6 +1539,9 @@ moc_ChartWidget.o: moc_ChartWidget.cpp
 
 moc_ChartTimeWidget.o: moc_ChartTimeWidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_ChartTimeWidget.o moc_ChartTimeWidget.cpp
+
+moc_testthread.o: moc_testthread.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_testthread.o moc_testthread.cpp
 
 ####### Install
 

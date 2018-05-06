@@ -1,6 +1,4 @@
 #include "ChartTimeWidget.h"
-#include <QVector>
-#include <QDebug>
 
 ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
 {
@@ -16,8 +14,11 @@ ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
 
     // 2 axis init:
     this->setXFormat("hh:mm:ss");
-    this->chart->axisX.setMin(QDateTime::currentDateTime().addMSecs(-10000));
-    this->chart->axisX.setMax(QDateTime::currentDateTime().addMSecs(0));
+    this->chart->time_range_max = QDateTime::currentDateTime().addMSecs(0);
+    this->chart->time_range_min = QDateTime::currentDateTime().addMSecs(-10000);
+
+    this->chart->axisX.setMin( this->chart->time_range_min);
+    this->chart->axisX.setMax( this->chart->time_range_max);
     this->setXTitleText("Time");
     this->setXTickCount(11);
 
@@ -58,30 +59,41 @@ void ChartTimeWidget::append( const double &k)
 {
     // last time
     qint64 last_t = -1;
+    qint64 now_t = QDateTime::currentDateTime().toMSecsSinceEpoch();
+
     if( this->chart->line_series.count() > 0)
     {
         QPointF point_time_last = this->chart->line_series.at( this->chart->line_series.count() - 1);
         last_t = qint64( point_time_last.rx() );
     }
 
-    this->chart->line_series.append( (QDateTime::currentDateTime()).toMSecsSinceEpoch(),k);
+    // append last_value
+    this->chart->line_series.append( now_t, k);
+
+    // remove front points
+    if( this->chart->line_series.count() > this->chart->range_max + 50)
+        this->chart->line_series.removePoints(0,50);
 
     // scroll the chart(curve plot)
-
     this->chart->x_unit_plot = this->chart->chart_main.plotArea().width() / (this->getXTickCount() - 1);
+
+
     if( this->chart->line_series.count() > 1)
     {
-        qint64 now_t = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
         double time_diff_msec = now_t - last_t;
         time_diff_msec /= 1000.0;
+//        time_diff_msec = (this->freq) / 1000.0;
         this->chart->chart_main.scroll( this->chart->x_unit_plot * time_diff_msec, 0);
-        qDebug() << now_t << "_" << last_t << time_diff_msec;
+//        this->chart->chart_main.scroll( this->chart->x_unit_plot , 0);
+//        qDebug() << now_t << "_" << last_t << time_diff_msec << this->chart->x_unit_plot;
     }
     else
     {
         this->chart->chart_main.scroll( this->chart->x_unit_plot , 0);
     }
+
+//    this->chart->chart_main.scroll( this->chart->x_unit_plot , 0);
 }
 
 
@@ -142,11 +154,9 @@ void ChartTimeWidget::setChartTitle(const QString &s)
 
 // value setup&update
 void ChartTimeWidget::slot_update()
-{
-    this->append( this->chart->last_value);
-}
+{    this->append( this->chart->last_value );}
 
-void ChartTimeWidget::slot_setValue(const double &k)
+void ChartTimeWidget::slot_setValue( double k)
 {	this->setValue(k);}
 
 void ChartTimeWidget::setValue(const double &k)
@@ -166,9 +176,7 @@ int ChartTimeWidget::getFrequency() const
 // timer operation
 void ChartTimeWidget::start()
 {
-    this->chart->axisX.setMin(QDateTime::currentDateTime().addMSecs(-10000));
-    this->chart->axisX.setMax(QDateTime::currentDateTime().addMSecs(0));
-
+    this->clean();
     this->timer->start( this->freq );
 }
 
@@ -184,5 +192,14 @@ void ChartTimeWidget::pause()
 void ChartTimeWidget::stop()
 {
     this->timer->stop();
+    this->clean();
+}
+
+// clean the all
+void ChartTimeWidget::clean()
+{
     this->chart->line_series.clear();
+
+    this->chart->axisX.setMin(this->chart->time_range_min);
+    this->chart->axisX.setMax(this->chart->time_range_max);
 }

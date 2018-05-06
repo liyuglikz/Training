@@ -21,6 +21,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 # Input
 HEADERS += ChartWidget.h \
-    ChartTimeWidget.h
+    ChartTimeWidget.h \
+    testthread.h
 SOURCES += ChartWidget.cpp Main.cpp \
     ChartTimeWidget.cpp

@@ -25,10 +25,13 @@ struct ChartTime{
     //QtCharts::QLineSeries line_series;
     QtCharts::QSplineSeries line_series;
 
-    int range_max = 0;
+    int range_max = 500;
     double x_unit;
     double x_unit_plot;
     double last_value = 0;
+
+    QDateTime time_range_min;
+    QDateTime time_range_max;
 };
 
 
@@ -41,7 +44,7 @@ class ChartTimeWidget : public QWidget
     Q_OBJECT
     public slots:
         void slot_update();
-        void slot_setValue( const double &k);
+        void slot_setValue( double k);
 
     public:
         ChartTimeWidget( QWidget *parent = 0);
@@ -85,6 +88,7 @@ class ChartTimeWidget : public QWidget
         void start();
         void pause();
         void stop();
+        void clean();
 
     private:
         ChartTime *chart;
