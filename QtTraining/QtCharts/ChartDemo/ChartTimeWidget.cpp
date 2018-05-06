@@ -46,7 +46,6 @@ ChartTimeWidget::~ChartTimeWidget()
 
 void ChartTimeWidget::append( const double &k)
 {
-    /*
     QVector<QPointF> points = this->chart->line_series.pointsVector();
     if( points.count() >= this->chart->range_max )
     {
@@ -54,9 +53,7 @@ void ChartTimeWidget::append( const double &k)
     }
     points.push_back( QPointF( (QDateTime::currentDateTime()).toMSecsSinceEpoch(), k) );
     this->chart->line_series.replace( points );
-    */
-    this->chart->line_series.append( (QDateTime::currentDateTime()).toMSecsSinceEpoch(),
-                                     k);
+    //this->chart->line_series.append( (QDateTime::currentDateTime()).toMSecsSinceEpoch(),k);
 }
 
 // X axis setup: range, label format, Title
