@@ -13,6 +13,7 @@
 #include <QtCharts/QDateTimeAxis>
 
 #include <QVBoxLayout>
+#include <QTimer>
 
 // a Chart struct: for chart's parts
 struct ChartTime{
@@ -72,12 +73,24 @@ class ChartTimeWidget : public QWidget
         void setChartTitle( const char *s = NULL);
         void setChartTitle( const QString &s);
 
+        // value setup
         void setValue( const double &k);
         double getValue() const;
+
+        // timer&frequency setup
+        void setFrequency( const int &milliseconds );
+        int getFrequency() const;
+
+        void start( const int &frequency);
+        void start();
+        void pause();
+        void stop();
 
     private:
         ChartTime *chart;
         QVBoxLayout *layout_main;
-};
 
+        QTimer *timer;
+        int freq;	//refresh frequency
+};
 #endif

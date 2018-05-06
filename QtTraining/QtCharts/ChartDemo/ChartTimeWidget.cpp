@@ -4,6 +4,9 @@
 
 ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
 {
+    this->timer = new QTimer();
+    QObject::connect( this->timer, SIGNAL(timeout()), this, SLOT(slot_update()));
+
     this->chart = new ChartTime();
     this->chart->range_max = 1000;
 
@@ -13,8 +16,8 @@ ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
 
     // 2 axis init:
     this->setXFormat("hh:mm:ss");
-    this->chart->axisX.setMax(QDateTime::currentDateTime().addMSecs(+5500));
-    this->chart->axisX.setMin(QDateTime::currentDateTime().addMSecs(-4500));
+    this->chart->axisX.setMin(QDateTime::currentDateTime().addMSecs(-10000));
+    this->chart->axisX.setMax(QDateTime::currentDateTime().addMSecs(0));
     this->setXTitleText("Time");
     this->setXTickCount(11);
 
@@ -44,30 +47,41 @@ ChartTimeWidget::ChartTimeWidget(QWidget *parent ) : QWidget(parent)
 
 ChartTimeWidget::~ChartTimeWidget()
 {
+    this->timer->stop();
+    delete this->timer;
+
     delete this->chart;
     delete this->layout_main;
 }
 
 void ChartTimeWidget::append( const double &k)
 {
-    this->chart->x_unit_plot = this->chart->chart_main.plotArea().width() / (this->getXTickCount() - 1);
+    // last time
+    qint64 last_t = -1;
     if( this->chart->line_series.count() > 0)
     {
         QPointF point_time_last = this->chart->line_series.at( this->chart->line_series.count() - 1);
-        qint64 last_t = qint64( point_time_last.rx() );
+        last_t = qint64( point_time_last.rx() );
+    }
+
+    this->chart->line_series.append( (QDateTime::currentDateTime()).toMSecsSinceEpoch(),k);
+
+    // scroll the chart(curve plot)
+
+    this->chart->x_unit_plot = this->chart->chart_main.plotArea().width() / (this->getXTickCount() - 1);
+    if( this->chart->line_series.count() > 1)
+    {
         qint64 now_t = QDateTime::currentDateTime().toMSecsSinceEpoch();
 
         double time_diff_msec = now_t - last_t;
         time_diff_msec /= 1000.0;
-        time_diff_msec = 1.0;
         this->chart->chart_main.scroll( this->chart->x_unit_plot * time_diff_msec, 0);
         qDebug() << now_t << "_" << last_t << time_diff_msec;
-        this->chart->line_series.append( now_t,k);
     }
     else
+    {
         this->chart->chart_main.scroll( this->chart->x_unit_plot , 0);
-        //this->chart->line_series.append( (QDateTime::currentDateTime()).toSecsSinceEpoch(),k);
-    this->chart->line_series.append( (QDateTime::currentDateTime()).toMSecsSinceEpoch(),k);
+    }
 }
 
 
@@ -126,12 +140,11 @@ void ChartTimeWidget::setChartTitle(const QString &s)
 {	this->chart->chart_main.setTitle( s );}
 
 
+// value setup&update
 void ChartTimeWidget::slot_update()
 {
-    this->chart->last_value += (qrand() % 10);
     this->append( this->chart->last_value);
 }
-
 
 void ChartTimeWidget::slot_setValue(const double &k)
 {	this->setValue(k);}
@@ -141,3 +154,35 @@ void ChartTimeWidget::setValue(const double &k)
 
 double ChartTimeWidget::getValue() const
 {    return this->chart->last_value;}
+
+
+// frequency setup
+void ChartTimeWidget::setFrequency(const int &milliseconds)
+{	this->freq = milliseconds;}
+
+int ChartTimeWidget::getFrequency() const
+{	return this->freq;}
+
+// timer operation
+void ChartTimeWidget::start()
+{
+    this->chart->axisX.setMin(QDateTime::currentDateTime().addMSecs(-10000));
+    this->chart->axisX.setMax(QDateTime::currentDateTime().addMSecs(0));
+
+    this->timer->start( this->freq );
+}
+
+void ChartTimeWidget::start(const int &frequency)
+{
+    this->freq = frequency;
+    this->start();
+}
+
+void ChartTimeWidget::pause()
+{	this->timer->stop();}
+
+void ChartTimeWidget::stop()
+{
+    this->timer->stop();
+    this->chart->line_series.clear();
+}

@@ -26,10 +26,10 @@ int main(int argc, char *argv[])
     QTimer timer;
     timer.start( 1000 );
     QObject::connect( &timer, SIGNAL(timeout()),
-                      &chart, SLOT(slot_update()));
-    QObject::connect( &timer, SIGNAL(timeout()),
                       &w, SLOT(slot_test()));
     chart.show();
+    chart.start(1000);
+    chart.setValue( 50 );
 
 	return app.exec();
 }
