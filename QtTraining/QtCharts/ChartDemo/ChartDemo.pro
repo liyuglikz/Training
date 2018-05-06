@@ -20,5 +20,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += ChartWidget.h
-SOURCES += ChartWidget.cpp Main.cpp
+HEADERS += ChartWidget.h \
+    ChartTimeWidget.h
+SOURCES += ChartWidget.cpp Main.cpp \
+    ChartTimeWidget.cpp

@@ -22,7 +22,7 @@ ChartWidget::ChartWidget(QWidget *parent ) : QWidget(parent)
 	this->chart->chart_main.addSeries( &(this->chart->line_series) );
 	this->chart->chart_main.setAxisX( &(this->chart->axisX), &(this->chart->line_series) );	
 	this->chart->chart_main.setAxisY( &(this->chart->axisY), &(this->chart->line_series) );	
-	this->chart->chart_main.legend()->hide ();
+    this->chart->chart_main.legend()->hide ();
 	this->chart->chart_main.setTitle("Real Time Data");
 
 	// 5 layout init:
@@ -64,19 +64,38 @@ void ChartWidget::setXTitleText( const char *s )
 void ChartWidget::setXTitleText( const QString &s )
 {	this->chart->axisX.setTitleText( s );}
 
+void ChartWidget::setXTickCount(const int &k)
+{	this->chart->axisX.setTickCount(k);}
+
+int ChartWidget::getXTickCount() const
+{	return this->chart->axisX.tickCount();}
+
 // X axis setup: range, label format, Title
 
 void ChartWidget::setYRange( const int &left, const int &right)
 {	this->chart->axisY.setRange(left, right);} 
 
 void ChartWidget::setYLabelFormat( const char *s )
-{ 	this->setYTitleText( QString(s) );}
+{ 	this->setYLabelFormat( QString(s) );}
 
 void ChartWidget::setYLabelFormat( const QString &s )
 {	this->chart->axisY.setLabelFormat( s );}
 
 void ChartWidget::setYTitleText( const char *s )
-{	this->setXTitleText( QString(s) );}
+{	this->setYTitleText( QString(s) );}
 
 void ChartWidget::setYTitleText( const QString &s )
 {	this->chart->axisY.setTitleText( s );}
+
+void ChartWidget::setYTickCount(const int &k)
+{	this->chart->axisY.setTickCount(k);}
+
+int ChartWidget::getYTickCount() const
+{	return this->chart->axisY.tickCount();}
+
+// chart setup:
+void ChartWidget::setChartTitle( const char *s)
+{	this->setChartTitle( QString(s) );}
+
+void ChartWidget::setChartTitle(const QString &s)
+{	this->chart->chart_main.setTitle( s );}

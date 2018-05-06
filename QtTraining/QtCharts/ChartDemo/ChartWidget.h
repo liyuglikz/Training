@@ -24,10 +24,16 @@ struct Chart{
 };
 
 
-//
+// ChartWidget for show the chart
+// struct: QValueAxis->QLineSeries->QChart->QChartView -> QVBoxLayout
+// struct: axisX/Y 	-> line_series->chart_main->chartview->layout_main->widget(self)
+
 class ChartWidget : public QWidget
 {
 	Q_OBJECT
+    signals:
+public slots:
+
 	public:
 		ChartWidget( QWidget *parent = 0);
 		~ChartWidget();
@@ -41,12 +47,22 @@ class ChartWidget : public QWidget
 		void setXTitleText( const char *s = NULL);
 		void setXTitleText( const QString &s);
 
+        void setXTickCount( const int &k);
+        int getXTickCount() const;
+
 		// Y setup:
 		void setYRange( const int &left, const int &right);
 		void setYLabelFormat( const char *s = NULL);
 		void setYLabelFormat( const QString &s);
 		void setYTitleText( const char *s = NULL);
 		void setYTitleText( const QString &s);
+
+        void setYTickCount( const int &k);
+        int getYTickCount() const;
+
+        // chart setup:
+        void setChartTitle( const char *s = NULL);
+        void setChartTitle( const QString &s);
 
 	private:
 		Chart *chart;
