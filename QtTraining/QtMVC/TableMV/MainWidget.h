@@ -12,11 +12,20 @@ class MainWidget : public QWidget
 {
     Q_OBJECT
 
+signals:
+    void signal_updateCellData(int x, int y, int value);
+
+public slots:
+    void slot_deployUpdateSignal();
+
 public:
     explicit MainWidget(QWidget *parent = 0);
     ~MainWidget();
 
 private:
+    void initLayout();
+    void initSignalSlots();
+
     Ui::MainWidget *ui;
 	TableModel *table_model;
 };
